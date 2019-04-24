@@ -2,31 +2,61 @@
   {
   "name" : "abi",
   "password" : "abi",
-  "phone_number" : "123"
+  "phone_number" : "123",
+  "car_type" : "jazz",
+  "max_passenger" : 3,
+  "driver_license" : "simabi",
+  "license_plate" : "b1234",
+  "basic_rate" : 100000
   },
   {
     "name" : "bobi",
     "password" : "bobi",
-    "phone_number" : "456"
+    "phone_number" : "456",
+    "car_type" : "brio",
+    "max_passenger" : 3,
+    "driver_license" : "simbobi",
+    "license_plate" : "b1111",
+    "basic_rate" : 100000
   },
   {
     "name" : "candra",
     "password" : "candra",
-    "phone_number" : "789"
+    "phone_number" : "789",
+    "car_type" : "avanza",
+    "max_passenger" : 5,
+    "driver_license" : "simcandra",
+    "license_plate" : "b1234",
+    "basic_rate" : 100000
   },
   {
     "name" : "dian",
     "password" : "dian",
-    "phone_number" : "111"
+    "phone_number" : "111",
+    "car_type" : "avanza",
+    "max_passenger" : 5,
+    "driver_license" : "simdian",
+    "license_plate" : "b1234",
+    "basic_rate" : 100000
   },
   {
     "name" : "endang",
     "password" : "endang",
-    "phone_number" : "222"
+    "phone_number" : "222",
+    "car_type" : "avanza",
+    "max_passenger" : 5,
+    "driver_license" : "simendang",
+    "license_plate" : "b1234",
+    "basic_rate" : 100000
   },
   {
     "name" : "fery",
     "password" : "fery",
-    "phone_number" : "333"
+    "phone_number" : "333",
+    "car_type" : "avanza",
+    "max_passenger" : 3,
+    "driver_license" : "simfery",
+    "license_plate" : "b1234",
+    "basic_rate" : 100000
   }
 ]

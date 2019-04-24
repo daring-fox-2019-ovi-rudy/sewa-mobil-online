@@ -18,6 +18,8 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
+
+    return queryInterface.bulkInsert('Drivers', rawData, {});
   },
 
   down: (queryInterface, Sequelize) => {
@@ -28,5 +30,6 @@ module.exports = {
       Example:
       return queryInterface.bulkDelete('People', null, {});
     */
+   return queryInterface.bulkDelete('Drivers', null, {});
   }
 };

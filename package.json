@@ -1,0 +1,26 @@
+{
+  "name": "peer-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daring-fox-2019-ovi-rudy/sewa-mobil-online.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daring-fox-2019-ovi-rudy/sewa-mobil-online/issues"
+  },
+  "homepage": "https://github.com/daring-fox-2019-ovi-rudy/sewa-mobil-online#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "pg": "^7.10.0",
+    "sequelize": "^5.7.5"
+  }
+}

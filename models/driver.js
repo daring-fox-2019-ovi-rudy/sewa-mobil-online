@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     car_type: DataTypes.STRING,
     max_passenger: DataTypes.INTEGER,
     driver_license: DataTypes.STRING,
-    license_plate: DataTypes.STRING
+    license_plate: DataTypes.STRING,
+    basic_rate : DataTypes.INTEGER
   }, {});
   Driver.associate = function(models) {
     // associations can be defined here

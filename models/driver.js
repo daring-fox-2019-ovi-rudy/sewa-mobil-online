@@ -9,7 +9,17 @@ module.exports = (sequelize, DataTypes) => {
     driver_license: DataTypes.STRING,
     license_plate: DataTypes.STRING,
     basic_rate : DataTypes.INTEGER
-  }, {});
+  }, {
+    hooks : {
+      beforeCreate : (driver, options) => {
+        switch(driver.car_type){
+          case "jeep" : driver.max_passenger = 5 ; break;
+          case "suv" : driver.max_passenger = 5 ; break;
+          case "sedan" : driver.max_passenger = 3 ; break;
+        }
+      }
+    }
+  });
   Driver.associate = function(models) {
     // associations can be defined here
   };

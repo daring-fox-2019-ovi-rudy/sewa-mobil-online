@@ -1,12 +1,12 @@
 <div>
     <ul>
         <li><a href="/">Home</a></li>
-        <% if (user == "customers") { %>
-            <li><a href="/customers/orders">Orders</a></li>
+        <% if (user == "customer" && log.isLogin == true) { %>
+            <li><a href="/customer/orders">Orders</a></li>
         <% } %>
-        <% if (user == "drivers") { %>
-            <li><a href="/drivers/orders">Orders</a></li>
+        <% if (user == "driver" && log.isLogin == true) { %>
+            <li><a href="/driver/orders">Orders</a></li>
+            <li><a href="/driver/">MyAccount</a></li>
         <% } %>
-        <li><a href="">MyAccount</a></li>
     </ul>
 </div>

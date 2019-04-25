@@ -17,16 +17,6 @@ router.get("/", (req,res)=>{
   })
 })
 
-// // router.post("/", (req,res)=>{
-// //   if(req.session.isLogin == true){   
-// //     req.session.isLogin = false;
-// //   } else if(req.session.isLogin == false){   
-// //     req.session.isLogin = true;
-// //   } 
-// //   res.redirect("/")
-// // })
-
-
 /// LOGIN PAGE ///
 router.get("/:user/login", (req,res)=>{
   let theUser = req.params.user
@@ -66,9 +56,33 @@ router.get("/:user/register", (req,res)=>{
   }
 })
 
-router.post("/:user/signup", (req,res)=>{
+router.post("/:user/register", (req,res)=>{
   let theUser = req.params.user
-  res.send(req.params.user)
+  res.send(req.body)
+  if(req.params.user == "customer") {
+    res.render("registerCustomer.ejs",{
+      log :req.session,
+      user : theUser 
+    })
+  } else if (req.params.user == "driver") {
+    Driver.create()
+    .then(result=>{
+      let objDriver = {}
+      objDriver.name = req.body.name
+      objDriver.password = req.body.password
+      objDriver.car_type = req.body.car_type
+      objDriver.license_plate = req.body.license_plate
+      res.send(result)
+      
+      
+      res.render("registerDriver.ejs", {
+        log :req.session,
+        user : theUser 
+      })
+    })
+} else {
+  res.send(`page not found`)
+}
 })
 
 module.exports = router

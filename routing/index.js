@@ -127,7 +127,7 @@ router.post("/:user/register", (req,res)=>{
       updatedAt : new Date()
     })
     .then(result => {
-      res.redirect("/driver/login")
+      res.redirect("/customer/login")
     })
     .catch(err=>{
       res.send(err)

@@ -132,7 +132,6 @@ router.get("/:user/login", (req,res)=>{
 })
 
 router.post("/:user/login", (req,res)=>{
-  let theUser = req.params.user
   if(req.session.isLogin == undefined || req.session.isLogin == false){
     if(req.params.user == "customer" || req.params.user == "driver" ) {
      if(req.params.user == "driver") {
@@ -176,12 +175,12 @@ router.post("/:user/login", (req,res)=>{
               res.redirect("/")
             }
           } else {
-            res.send("username not found")
+            res.redirect("/driver/login?status=login-failed-:-username-does-not-found")
           }
         })
       } 
     } else {
-      res.send(`page not found`)
+      res.redirect("/driver/login?status=login-failed-:-page-does-not-found")
     }
   } else {
     res.redirect("/test")
@@ -217,7 +216,7 @@ router.post("/:user/register", (req,res)=>{
       updatedAt : new Date()
     })
     .then(result => {
-      res.redirect("/customer/login")
+      res.redirect("/customer/login?status=success-create-customer")
     })
     .catch(err=>{
       res.send(err)
@@ -234,10 +233,11 @@ router.post("/:user/register", (req,res)=>{
     objDriver.updatedAt = new Date
     let rate = getrate(objDriver.car_type)
     objDriver.basic_rate = rate
-
+    objDriver.max_passenger = Driver.getMaxPassenger(req.body.car_type)
+    // res.send(objDriver)
     Driver.create(objDriver)
     .then(result=>{
-      res.redirect("/driver/login")
+      res.redirect("/driver/login?status=success-create-driver")
     })
     .catch(err=>{
       res.send(err)

@@ -7,23 +7,29 @@ const Models = require("../models")
 module.exports = (sequelize, DataTypes) => {
   const Driver = sequelize.define('Driver', {
     name: {
-      type : DataTypes.STRING
+      type : DataTypes.STRING,
     },
     password: DataTypes.STRING,
-    phone_number: DataTypes.STRING,
+    phone_number: {
+      type : DataTypes.STRING,
+      validate : {
+        len : [10,14],
+        isInt: true
+      }
+    },
     car_type: DataTypes.STRING,
     max_passenger: DataTypes.INTEGER,
     driver_license: {
       type : DataTypes.STRING,
       validate : {
-        len : [11,13],
+        len : [10,14],
         isInt: true
       }
     },
     license_plate: {
       type : DataTypes.STRING,
       validate : {
-        len : [3,6],
+        len : [3,7],
         notEmpty: true,
         notContains: ' ',
       }
@@ -32,11 +38,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     hooks : {
       beforeCreate : (driver, options) => {
-        switch(driver.car_type){
-          case "jeep" : driver.max_passenger = 5 ; break;
-          case "suv" : driver.max_passenger = 5 ; break;
-          case "sedan" : driver.max_passenger = 3 ; break;
-        }
+        // switch(driver.car_type){
+        //   case "jeep" : driver.max_passenger = 5 ; break;
+        //   case "suv" : driver.max_passenger = 5 ; break;
+        //   case "sedan" : driver.max_passenger = 3 ; break;
+        // }
         driver.password = bcrypt.hashSync(driver.password, salt);
       }
     }
@@ -46,6 +52,14 @@ module.exports = (sequelize, DataTypes) => {
     Driver.hasMany(models.Order)
 
   };
+  
+  Driver.getMaxPassenger = function(type){
+    switch(type){
+      case "jeep" : return 5 ; break;
+      case "suv" : return 5 ; break;
+      case "sedan" : return 3 ; break;
+    }
+  }
 
   return Driver;
 };

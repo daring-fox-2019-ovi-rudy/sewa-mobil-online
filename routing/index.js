@@ -1,18 +1,53 @@
 let router = require('express').Router()
 let Models = require('../models')
 let Customer = Models.Customer
-let Driver = Models.Driver 
-let Order = Models.Order
+
+let Driver = Models.Driver
+let Order = Models.Order 
+
 let getrate = require('../helpers/basicrate')
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const salt = bcrypt.genSaltSync(saltRounds);
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
+
+/// test routes ///
 router.get("/test", (req,res)=>{
-  res.send(req.session)
+  Order.findAll({where: {order_date : "2019-04-24", status:0}})
+  .then(orders=>{
+    if(orders.length > 0){
+      let ids = []
+      console.log(orders)
+      orders.forEach(order=>{
+        ids.push(order.DriverId)
+      })
+      return ids  
+    } else {
+      res.redirect("/?status=no-driver-available")
+    }
+  })
+  .then(ids =>{
+    console.log(ids)
+    Driver.findAll({
+      where : {
+        id : {
+          [Op.notIn] : ids
+        }
+      }
+    })
+    .then(result=>{
+      res.send(result)
+    })
+    .catch(err=>{
+      res.send(err)
+    })
+  })
 })
 
+/// MAIN PAGE ///
 router.get("/", (req,res)=>{
   if(req.session.isLogin == undefined){   
     req.session.isLogin = false;
@@ -21,26 +56,54 @@ router.get("/", (req,res)=>{
   if(req.session.loggedAs){
     theUser = req.session.loggedAs
   }
+  let status = ""
+  if(req.query.status){
+    let msg = req.query.status.toString()
+    let message = "" 
+    for(let i = 0; i < msg.length; i++){
+      if(msg[i] === "-"){
+        message += " "
+      } else {
+        message += msg[i]
+      }
+    }
+    status = "Attention !! "+ message
+  }
   res.render("home.ejs", {
     log : req.session,
-    user: theUser
+    user: theUser,
+    message : status
   })
 })
 
 /// LOGIN PAGE ///
 router.get("/:user/login", (req,res)=>{
   let theUser = req.params.user
+  let status = ""
+  if(req.query.status){
+    let msg = req.query.status.toString()
+    let message = "" 
+    for(let i = 0; i < msg.length; i++){
+      if(msg[i] === "-"){
+        message += " "
+      } else {
+        message += msg[i]
+      }
+    }
+    status = "Attention !! "+ message
+  }
   if(req.session.isLogin == undefined || req.session.isLogin == false){
     if(req.params.user == "customer" || req.params.user == "driver" ) {
       res.render("login_page.ejs", {
         log :req.session,
-        user : theUser 
+        user : theUser,
+        message : status 
       })
     } else {
       res.send(`page not found`)
     }
   } else {
-    res.redirect("/")
+    res.redirect("/?status=already-logged-in")
   }
 })
 
@@ -64,6 +127,8 @@ router.post("/:user/login", (req,res)=>{
               req.session.userName = result.name
               req.session.loggedAs = 'driver'
               res.redirect("/")
+            } else {
+              res.redirect("/driver/login?status=login-failed-:-password-does-not-match")
             }
           } else {
             res.send("username not found")
@@ -156,6 +221,25 @@ router.post("/:user/register", (req,res)=>{
   } else {
     res.send(`page not found`)
   }
+})
+
+///  ORDER LISTS ///
+router.get("/:user/orders", (req,res)=>{
+  if(req.session.isLogin == undefined || req.session.isLogin == "false"){
+    res.redirect("${req.params.user}/login?status=please-log-in-first")
+  } else {
+    if(req.params.user == "customer"){
+      
+    } else if (req.params.user == "driver"){
+
+    } else {
+      res.redirect("/?status=page-not-found")
+    }
+  }
+})
+
+router.post("/:user/orders", (req,res)=>{
+  
 })
 
 router.get("/customer/rent", (req,res) => {

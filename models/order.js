@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Order.belongsTo(models.Driver)
     Order.belongsTo(models.Customer)
-
   };
 
   return Order;

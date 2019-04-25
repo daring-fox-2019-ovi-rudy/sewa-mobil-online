@@ -29,13 +29,12 @@ module.exports = (sequelize, DataTypes) => {
           user.password = bcrypt.hashSync(user.password, salt);
             // Store hash in your password DB.
       }
-    },
-    sequelize
+    }
   });
   Customer.associate = function(models) {
     // associations can be defined here
     Customer.hasMany(models.Order)
-    Customer.belongsToMany(models.Driver, {through: 'Order'});
+    // Customer.belongsToMany(models.Driver, {through: 'Order'});
   };
   return Customer;
 };

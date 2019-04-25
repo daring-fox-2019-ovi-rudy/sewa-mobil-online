@@ -10,20 +10,19 @@
 <body>
     <%- include('../partials/navbar.ejs')%>
     <center>
-      <h1>Driver Order History</h1>
+      <h1>Customer Order History</h1>
       <table border="1">
           <tr>
-              <th>customer name</th>
+              <th>driver name</th>
               <th>phone number</th>
               <th>requested at</th>
               <th>updated at</th>
               <th>status</th>
-              <th>action</th>
           </tr>
           <% datas.forEach(data => { %>
               <tr>
-                  <td><%= data.Customer.name %></td>
-                  <td><%= data.Customer.phone_number %></td>
+                  <td><%= data.Driver.name %></td>
+                  <td><%= data.Driver.phone_number %></td>
                   <td><%= data.createdAt %></td>
                   <td><%= data.updatedAt %></td>
                   <% if (data.status == 0) { %>
@@ -34,11 +33,6 @@
                   <% } %>
                   <% if (data.status == 2) { %>
                     <td>rejected</td>
-                  <% } %>
-                  <% if (data.status == 0) { %>
-                    <td><a href="/process/<%= data.id %>/accept">Accept</a> | <a href="/process/<%= data.id %>/reject">Reject</a></td>
-                  <% } else { %> 
-                  <td> no action </td>
                   <% } %>
               </tr>
           <% }) %>

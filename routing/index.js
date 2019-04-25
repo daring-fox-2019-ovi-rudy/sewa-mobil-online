@@ -155,7 +155,7 @@ router.post("/:user/login", (req,res)=>{
               res.redirect("/driver/login?status=login-failed-:-password-does-not-match")
             }
           } else {
-            res.send("username not found")
+            res.redirect("/driver/login?status=login-failed-:-password-does-not-match")
           }
         })
       } else if(req.params.user == "customer") {
@@ -247,29 +247,91 @@ router.post("/:user/register", (req,res)=>{
   }
 })
 
-///  ORDER LISTS ///
-router.get("/:user/orders", (req,res)=>{
-  if(req.session.isLogin == undefined || req.session.isLogin == "false"){
-    res.redirect("${req.params.user}/login?status=please-log-in-first")
-  } else {
-    if(req.params.user == "customer"){
-      
-    } else if (req.params.user == "driver"){
-
-    } else {
-      res.redirect("/?status=page-not-found")
-    }
-  }
-})
-
 // // HISTORY ORDER
-router.post("/:user/:id/orders", (req,res)=>{
+router.get("/:user/orders", (req,res)=>{
   if(req.session.isLogin) {
     if(req.session.isLogin == true) {
       if(req.params.user == "customer"){
-
+        let condition = { CustomerId : req.session.userId}
+        Order.findAll({
+          where : condition,
+          include: [Driver],
+          order: [['createdAt', 'DESC']]
+        })
+        .then(results=>{
+          let theUser = ""
+          if(req.session.loggedAs){
+            theUser = req.session.loggedAs
+          }
+          let status = ""
+          if(req.query.status){
+            let msg = req.query.status.toString()
+            let message = "" 
+            for(let i = 0; i < msg.length; i++){
+              if(msg[i] === "-"){
+                message += " "
+              } else {
+                message += msg[i]
+              }
+            }
+            status = "Attention !! "+ message
+          }
+          if(results){
+            if(results.length > 0){
+              res.render("historyCustomer.ejs", {
+                datas : results,
+                message : status,
+                user : theUser,
+                log : req.session
+              })
+            } else {
+              res.redirect("/?status=no-data-found")  
+            }
+          } else {
+            res.redirect("/?status=please-login-first")
+          }
+        })
       } else if(req.params.user == "driver"){
-        
+        // res.send("disini")
+        let condition = { DriverId : req.session.userId}
+        Order.findAll({
+          where : condition,
+          include: [Customer],
+          order: [['createdAt', 'DESC']]
+        })
+        .then(results=>{
+          let theUser = ""
+          if(req.session.loggedAs){
+            theUser = req.session.loggedAs
+          }
+          let status = ""
+          if(req.query.status){
+            let msg = req.query.status.toString()
+            let message = "" 
+            for(let i = 0; i < msg.length; i++){
+              if(msg[i] === "-"){
+                message += " "
+              } else {
+                message += msg[i]
+              }
+            }
+            status = "Attention !! "+ message
+          }
+          if(results){
+            if(results.length > 0){
+              res.render("historyDriver.ejs", {
+                datas : results,
+                message : status,
+                user : theUser,
+                log : req.session
+              })
+            } else {
+              res.redirect("/?status=no-data-found")  
+            }
+          } else {
+            res.redirect("/?status=please-login-first")
+          }
+        })
       } else {
         res.send("page does not exists")
       }
@@ -281,6 +343,36 @@ router.post("/:user/:id/orders", (req,res)=>{
   }
 })
 
+// HANDLE UPDATE REJECT ORDER
+router.get("/process/:updateId/accept", (req,res)=>{
+  let orderId = req.params.updateId
+  let objUpd = {status : 1}
+  Order.update(objUpd, {where : {id : orderId}})
+  .then(result=>{
+    let hasil = ""
+    if(result == 1) {
+      hasil = "sukses"
+    } else {
+      hasil = "gagal"
+    }
+    res.redirect(`/driver/orders?status=${hasil}`)
+  })
+  .catch(err=>{
+    res.send(err)
+  })
+})
+
+router.get("/process/:updateId/reject", (req,res)=>{
+  let objUpd = {status : 2}
+  let orderId = req.params.updateId
+  Order.update(objUpd, {where : {id : orderId}})
+  .then(result=>{
+
+  })
+  .catch(err=>{
+    res.send(err)
+  })
+})
 
 // // CUSTOMER PLACE ORDER 1. PILIH TANGGAL PESAN
 router.get("/customer/rent", (req,res) => {

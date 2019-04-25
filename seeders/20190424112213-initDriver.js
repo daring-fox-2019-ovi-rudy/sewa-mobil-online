@@ -1,6 +1,6 @@
 'use strict';
 const fs = require('fs')
-const rawData = JSON.parse(fs.readFileSync('../peer-project/driversInit.json'))
+const rawData = JSON.parse(fs.readFileSync('./driversInit.json'))
 rawData.forEach(data=>{
   data.createdAt = new Date
   data.updatedAt = new Date

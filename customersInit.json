@@ -1,0 +1,32 @@
+[
+  {
+  "name" : "andi",
+  "password" : "andi",
+  "phone_number" : "123"
+  },
+  {
+    "name" : "bambang",
+    "password" : "bambang",
+    "phone_number" : "456"
+  },
+  {
+    "name" : "chika",
+    "password" : "chika",
+    "phone_number" : "789"
+  },
+  {
+    "name" : "deri",
+    "password" : "deri",
+    "phone_number" : "111"
+  },
+  {
+    "name" : "erha",
+    "password" : "erha",
+    "phone_number" : "222"
+  },
+  {
+    "name" : "fikri",
+    "password" : "fikri",
+    "phone_number" : "333"
+  }
+]

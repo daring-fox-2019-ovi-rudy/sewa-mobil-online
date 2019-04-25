@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/daring-fox-2019-ovi-rudy/sewa-mobil-online#readme",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "cookie-parser": "^1.4.4",
     "ejs": "^2.6.1",
     "express": "^4.16.4",

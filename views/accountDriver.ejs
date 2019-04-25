@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sewa Mobil Cepat dan Terpercaya</title>
+    <%- include('../partials/navbarcss.ejs')%>
+</head>
+<body>
+    <%- include('../partials/navbar.ejs')%>
+    <center>
+        <br>
+        <h1>My Account</h1><br>
+        <h3>Name : <%= res.name %></h3> 
+        <h3>Phone Number : <%= res.phone_number%></h3> 
+        <h3>Car Type: <%= res.car_type%></h3> 
+        <h3>Max Passenger: <%= res.max_passenger%></h3> 
+        <h3>Driver License: <%= res.driver_license%></h3> 
+        <br>
+        <a href="/driver/del"> <input type="submit" value="DELETE ACCOUNT?"> </a> <a href="/"><input type="submit" value="BACK"></a>
+    </center>
+</body>
+</html>

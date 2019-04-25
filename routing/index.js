@@ -16,7 +16,7 @@ const Op = Sequelize.Op;
 
 /// test routes ///
 router.get("/test", (req,res)=>{
-  Order.findAll({where: {order_date : "2019-04-24", status:0}})
+  Order.findAll({where: {order_date : "2019-04-23", status:0}})
   .then(orders=>{
     if(orders.length > 0){
       let ids = []
@@ -26,11 +26,24 @@ router.get("/test", (req,res)=>{
       })
       return ids  
     } else {
-      res.redirect("/?status=no-driver-available")
+      Driver.findAll()
+      .then(drivers=>{
+        if(drivers){
+          if(drivers.length > 0) {
+            res.send(drivers)
+          } else {
+            res.redirect("/?status=no-driver-available")  
+          }
+        } else{
+          res.redirect("/?status=no-driver-available")
+        }
+      })
+      .catch(err=>{
+        throw err
+      })
     }
   })
   .then(ids =>{
-    console.log(ids)
     Driver.findAll({
       where : {
         id : {
@@ -38,12 +51,23 @@ router.get("/test", (req,res)=>{
         }
       }
     })
-    .then(result=>{
-      res.send(result)
+    .then(drivers=>{
+      if(drivers){
+        if(drivers.length > 0) {
+          res.send(drivers)
+        } else {
+          res.redirect("/?status=no-driver-available")  
+        }
+      } else{
+        res.redirect("/?status=no-driver-available")
+      }
     })
     .catch(err=>{
-      res.send(err)
+      throw err
     })
+  })
+  .catch(err=>{
+    res.send(err)
   })
 })
 
@@ -238,23 +262,155 @@ router.get("/:user/orders", (req,res)=>{
   }
 })
 
-router.post("/:user/orders", (req,res)=>{
-  
+// // HISTORY ORDER
+router.post("/:user/:id/orders", (req,res)=>{
+  if(req.session.isLogin) {
+    if(req.session.isLogin == true) {
+      if(req.params.user == "customer"){
+
+      } else if(req.params.user == "driver"){
+        
+      } else {
+        res.send("page does not exists")
+      }
+    } else {
+      res.redirect("/?status=please-login-first")
+    }
+  } else {
+    res.redirect("/?status=please-login-first")
+  }
 })
 
+
+// // CUSTOMER PLACE ORDER 1. PILIH TANGGAL PESAN
 router.get("/customer/rent", (req,res) => {
+  let status = ""
+  if(req.query.status){
+    let msg = req.query.status.toString()
+    let message = "" 
+    for(let i = 0; i < msg.length; i++){
+      if(msg[i] === "-"){
+        message += " "
+      } else {
+        message += msg[i]
+      }
+    }
+    status = "Attention !! "+ message
+  }
+
   res.render("rentCustomer.ejs",{
-    log :req.session,
-    user : "customer"
+    log : req.session,
+    user : "customer",
+    message : status
   })
 })
 
+// // CUSTOMER PLACE ORDER 2. PILIH DRIVER AVAILABLE
 router.post("/customer/rent", (req, res) => {
-  // res.send(req.body)
-  res.render("chooseDriver.ejs", {
-    date: req.body.date,
-    user: "costumer"
+  let od = req.body.order_date
+  od = od.toString()
+  let sekarang = new Date
+  sekarang = sekarang.toISOString().split('T')[0]
+
+  if(od < sekarang){
+    res.redirect("/customer/rent?status=date-must-be-later-than-today")
+  } else {
+    Order.findAll({where: {order_date : od, status:0}})
+  .then(orders=>{
+    if(orders.length > 0){
+      let ids = []
+      orders.forEach(order=>{
+        ids.push(order.DriverId)
+      })
+      return ids  
+    } else {
+      Driver.findAll()
+      .then(drivers=>{
+        if(drivers){
+          if(drivers.length > 0) {
+            // res.send(drivers)
+            // res.send(req.session)
+            res.render("chooseDriver.ejs", {
+              log : req.session,
+              order_date: od,
+              user: "costumer",
+              datas : drivers
+            })
+          } else {
+            res.redirect("/?status=no-driver-available")  
+          }
+        } else{
+          res.redirect("/?status=no-driver-available")
+        }
+      })
+      .catch(err=>{
+        throw err
+      })
+    }
+  })
+  .then(ids =>{
+    Driver.findAll({
+      where : {
+        id : {
+          [Op.notIn] : ids
+        }
+      }
+    })
+    .then(drivers=>{
+      if(drivers){
+        if(drivers.length > 0) {
+          res.send(drivers)
+        } else {
+          res.redirect("/?status=no-driver-available")  
+        }
+      } else{
+        res.redirect("/?status=no-driver-available")
+      }
+    })
+    .catch(err=>{
+      throw err
+    })
+  })
+  .catch(err=>{
+    res.send(err)
+  })
+  }
+})
+
+// // HANDLE CREATE NEW ORDER DARI CUSTOMER PLAXE ORDER
+router.get("/neworder/:driverId/:customerId/:date", (req,res)=>{
+  let id_driver = req.params.driverId
+  let id_customer = req.params.customerId
+  let the_date = req.params.date
+  let obj ={
+    order_date : the_date,
+    CustomerId : id_customer,
+    DriverId : id_driver,
+    createdAt : new Date,
+    updatedAt : new Date,
+    status : 0
+  }
+  // obj = JSON.stringify(obj)
+  // obj = JSON.parse(obj)
+  Order.create(obj)
+  .then(result=>{
+    res.redirect(`/customer/orders`)
+  })
+  .catch(err=>{
+    res.send(err)
   })
 })
+
+// // LOG OUT
+router.get("/logout", (req,res)=>{
+  req.session.destroy(err=>{
+    if(err){
+      res.redirect("/?status=err")
+    } else {
+      res.redirect("/")
+    }
+  })
+})
+
 
 module.exports = router

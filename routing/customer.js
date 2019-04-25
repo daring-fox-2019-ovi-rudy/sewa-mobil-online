@@ -1,7 +1,11 @@
 let route = require('express').Router()
 
-route.get("/customer",(req,res)=>{
-  res.send("halaman customer")
+route.get("/login",(req,res)=>{
+  res.render("login_page.ejs")
+})
+
+route.post("/login", (req,res)=>{
+  
 })
 
 module.exports = route

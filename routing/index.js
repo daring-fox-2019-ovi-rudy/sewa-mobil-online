@@ -5,6 +5,5 @@ let Order = require("./order")
 
 router.use("/", Customer)
 router.use("/", Driver)
-router.use("/", Order)
 
 module.exports = router

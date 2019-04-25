@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <%- include('../partials/style.ejs')%>
+</head>
+<body>
+  <center>
+      <h1>Login</h1>
+      <div>
+        <form action="/masuklogin">
+          <label for="userName">User Name</label><br>
+          <input type="text" id="userName" name="userName" placeholder="User Name"><br>
+          <label for="password">Password</label><br>
+          <input type="password" id="password" name="password" placeholder="Password"><br><br>
+          <input type="submit" value="Login">
+          <div>Or <a href="/regis">Register</a></div>
+        </form>
+      </div>
+  </center>
+</body>
+</html>

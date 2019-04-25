@@ -10,5 +10,8 @@
             <li><a href="/driver/orders">Orders</a></li>
             <li><a href="/driver/">MyAccount</a></li>
         <% } %>
+        <% if (log.isLogin == true) { %>
+            <li><a href="/logout">Log Out</a></li>
+        <% } %>
     </ul>
 </div>

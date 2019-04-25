@@ -1,17 +1,51 @@
 let router = require('express').Router()
 let Models = require('../models')
 let Customer = Models.Customer
-let Driver = Models.Driver 
+let Driver = Models.Driver
+let Order = Models.Order 
 let getrate = require('../helpers/basicrate')
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const salt = bcrypt.genSaltSync(saltRounds);
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
+
+/// test routes ///
 router.get("/test", (req,res)=>{
-  res.send(req.session)
+  Order.findAll({where: {order_date : "2019-04-24", status:0}})
+  .then(orders=>{
+    if(orders.length > 0){
+      let ids = []
+      console.log(orders)
+      orders.forEach(order=>{
+        ids.push(order.DriverId)
+      })
+      return ids  
+    } else {
+      res.redirect("/?status=no-driver-available")
+    }
+  })
+  .then(ids =>{
+    console.log(ids)
+    Driver.findAll({
+      where : {
+        id : {
+          [Op.notIn] : ids
+        }
+      }
+    })
+    .then(result=>{
+      res.send(result)
+    })
+    .catch(err=>{
+      res.send(err)
+    })
+  })
 })
 
+/// MAIN PAGE ///
 router.get("/", (req,res)=>{
   if(req.session.isLogin == undefined){   
     req.session.isLogin = false;
@@ -165,9 +199,9 @@ router.get("/:user/orders", (req,res)=>{
     res.redirect("${req.params.user}/login?status=please-log-in-first")
   } else {
     if(req.params.user == "customer"){
-
-    } else if (req.params.user == "driver"){
       
+    } else if (req.params.user == "driver"){
+
     } else {
       res.redirect("/?status=page-not-found")
     }

@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const salt = bcrypt.genSaltSync(saltRounds);
+const Models = require("../models")
 
 'use strict';
 module.exports = (sequelize, DataTypes) => {
@@ -42,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
   });
   Driver.associate = function(models) {
     // associations can be defined here
+    Driver.hasMany(models.Order)
+    Driver.belongsToMany(models.Customer, {through: 'Order'});
   };
+
   return Driver;
 };
+

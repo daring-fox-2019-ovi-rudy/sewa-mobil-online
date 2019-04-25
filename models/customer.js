@@ -7,6 +7,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Customer.associate = function(models) {
     // associations can be defined here
+    Customer.hasMany(models.Order)
+    Customer.belongsToMany(models.Driver, {through: 'Order'});
   };
   return Customer;
 };

@@ -2,6 +2,7 @@
     <ul>
         <li><a href="/">Home</a></li>
         <% if (user == "customer" && log.isLogin == true) { %>
+            <li><a href="/customer/rent">Rent</a></li>
             <li><a href="/customer/orders">Orders</a></li>
             <li><a href="/customer/">MyAccount</a></li>
         <% } %>

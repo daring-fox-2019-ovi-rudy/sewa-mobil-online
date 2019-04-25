@@ -2,6 +2,7 @@ let router = require('express').Router()
 let Models = require('../models')
 let Customer = Models.Customer
 let Driver = Models.Driver 
+let Order = Models.Order
 let getrate = require('../helpers/basicrate')
 
 const bcrypt = require('bcrypt');
@@ -155,6 +156,21 @@ router.post("/:user/register", (req,res)=>{
   } else {
     res.send(`page not found`)
   }
+})
+
+router.get("/customer/rent", (req,res) => {
+  res.render("rentCustomer.ejs",{
+    log :req.session,
+    user : "customer"
+  })
+})
+
+router.post("/customer/rent", (req, res) => {
+  // res.send(req.body)
+  res.render("chooseDriver.ejs", {
+    date: req.body.date,
+    user: "costumer"
+  })
 })
 
 module.exports = router

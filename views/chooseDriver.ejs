@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Choose Rent</title>
+    <%- include('../partials/navbarcss.ejs')%>
+</head>
+<body>
+    <%- include('../partials/navbar.ejs')%>
+    <center>
+        <form action="" method="POST">
+            <h1>Choose Driver</h1>
+            <h3>Date : <%= date %></h3>
+            <table border="1">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Car Type</th>
+                    <th>Max Passenger</th>
+                    <th>Licence Plat</th>
+                    <th>Basic Fee</th>
+                    <th>Options</th>
+                </tr>
+                <% data.forEach(result => { %>
+                    <tr>
+                        <th><%= data.id %></th>
+                        <th><%= data.name %></th>
+                        <th><%= data.phone_number %></th>
+                        <th><%= data.car_type %></th>
+                        <th><%= data.max_pasengger %></th>
+                        <th><%= data.licence_plate%></th>
+                        <th><%= data.basic_free %></th>
+                        <th><a href="/"><input type="submit" value="ACCEPT"></a>
+                        <a href="/"><input type="submit" value="REJECT"></a></th>
+                    </tr>
+                <% }) %>
+            </table>
+        </form>
+    </center>
+</body>
+</html>

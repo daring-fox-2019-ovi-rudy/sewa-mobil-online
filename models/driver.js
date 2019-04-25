@@ -45,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Driver.hasMany(models.Order)
     Driver.belongsToMany(models.Customer, {through: 'Order'});
+
   };
 
   return Driver;

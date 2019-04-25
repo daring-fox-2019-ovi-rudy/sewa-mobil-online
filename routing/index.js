@@ -1,8 +1,10 @@
 let router = require('express').Router()
 let Models = require('../models')
 let Customer = Models.Customer
+
 let Driver = Models.Driver
 let Order = Models.Order 
+
 let getrate = require('../helpers/basicrate')
 
 const bcrypt = require('bcrypt');
@@ -133,13 +135,32 @@ router.post("/:user/login", (req,res)=>{
           }
         })
       } else if(req.params.user == "customer") {
-        // bcrypt.compareSync(myPlaintextPassword, hash);
+        let condition = {
+          name : req.body.userName 
+        }
+        
+        let myPlaintextPassword = req.body.password
+        Customer.findOne({where:condition})
+        .then(result=>{
+          if(result) {
+            let hash = result.password
+            if(bcrypt.compareSync(myPlaintextPassword, hash) == true){
+              req.session.isLogin = true
+              req.session.userId = result.id
+              req.session.userName = result.name
+              req.session.loggedAs = 'customer'
+              res.redirect("/")
+            }
+          } else {
+            res.send("username not found")
+          }
+        })
       } 
     } else {
       res.send(`page not found`)
     }
   } else {
-    res.redirect("/home")
+    res.redirect("/test")
   }
 })
 
@@ -149,7 +170,7 @@ router.get("/:user/register", (req,res)=>{
   if(req.params.user == "customer") {
       res.render("registerCustomer.ejs",{
         log :req.session,
-        user : theUser 
+        user : theUser
       })
   } else if (req.params.user == "driver") {
     res.render("registerDriver.ejs", {
@@ -164,9 +185,18 @@ router.get("/:user/register", (req,res)=>{
 router.post("/:user/register", (req,res)=>{
   let theUser = req.params.user
   if(req.params.user == "customer") {
-    res.render("registerCustomer.ejs",{
-      log :req.session,
-      user : theUser 
+    Customer.create({
+      name : req.body.name,
+      password : req.body.password,
+      phone_number : req.body.phone_number,
+      createdAt : new Date(),
+      updatedAt : new Date()
+    })
+    .then(result => {
+      res.redirect("/customer/login")
+    })
+    .catch(err=>{
+      res.send(err)
     })
   } else if (req.params.user == "driver") {
     let objDriver = {}
@@ -212,5 +242,19 @@ router.post("/:user/orders", (req,res)=>{
   
 })
 
+router.get("/customer/rent", (req,res) => {
+  res.render("rentCustomer.ejs",{
+    log :req.session,
+    user : "customer"
+  })
+})
+
+router.post("/customer/rent", (req, res) => {
+  // res.send(req.body)
+  res.render("chooseDriver.ejs", {
+    date: req.body.date,
+    user: "costumer"
+  })
+})
 
 module.exports = router

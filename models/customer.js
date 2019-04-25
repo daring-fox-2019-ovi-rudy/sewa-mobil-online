@@ -6,10 +6,7 @@ const salt = bcrypt.genSaltSync(saltRounds)
 module.exports = (sequelize, DataTypes) => {
   const Customer = sequelize.define('Customer', {
     name: {
-      type : DataTypes.STRING,
-      validate:{
-        len : [3, 10]
-      }
+      type : DataTypes.STRING
     },
     password: {
       type : DataTypes.STRING,

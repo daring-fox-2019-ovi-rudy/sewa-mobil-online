@@ -7,7 +7,7 @@ const Models = require("../models")
 module.exports = (sequelize, DataTypes) => {
   const Driver = sequelize.define('Driver', {
     name: {
-      type : DataTypes.STRING,
+      type : DataTypes.STRING
     },
     password: DataTypes.STRING,
     phone_number: {

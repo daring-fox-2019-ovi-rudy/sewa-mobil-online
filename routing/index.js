@@ -403,7 +403,6 @@ router.post("/customer/rent", (req, res) => {
   od = od.toString()
   let sekarang = new Date
   sekarang = sekarang.toISOString().split('T')[0]
-
   if(od < sekarang){
     res.redirect("/customer/rent?status=date-must-be-later-than-today")
   } else {
@@ -502,6 +501,87 @@ router.get("/logout", (req,res)=>{
       res.redirect("/")
     }
   })
+})
+
+router.get("/:user/", (req, res) => {
+  if (req.params.user == "customer"){
+    Customer.findOne({
+      where : {
+        id: req.session.userId
+      }
+    })
+    .then( result => {
+      res.render("accountCustomer.ejs",{
+        res : result,
+        log : req.session,
+        user : req.params.user
+      })
+    })
+    .catch(err => {
+      res.send(err)
+    })
+  }else if (req.params.user == "driver"){
+    Driver.findOne({
+      where : {
+        id: req.session.userId
+      }
+    })
+    .then( result => {
+      res.render("accountDriver.ejs",{
+        res : result,
+        log : req.session,
+        user : req.params.user
+      })
+    })
+    .catch(err => {
+      res.send(err)
+    })
+  }else{
+    res.send("data not found")
+  }
+})
+
+router.get("/:user/del", (req, res) => {
+  console.log(req.session.userId)
+  if (req.params.user == "customer"){
+    Customer.destroy({
+      where : {
+        id: req.session.userId
+      }
+    })
+    .then( result => {
+      req.session.destroy(err=>{
+        if(err){
+          res.redirect("/?status=err")
+        } else {
+          res.redirect("/")
+        }
+      })
+    })
+    .catch(err => {
+      res.send(err)
+    })
+  }else if (req.params.user == "driver"){
+    Driver.destroy({
+      where : {
+        id: req.session.userId
+      }
+    })
+    .then( result => {
+      req.session.destroy(err=>{
+        if(err){
+          res.redirect("/?status=err")
+        } else {
+          res.redirect("/")
+        }
+      })
+    })
+    .catch(err => {
+      res.send(err)
+    })
+  }else{
+    res.send("data not found")
+  }
 })
 
 

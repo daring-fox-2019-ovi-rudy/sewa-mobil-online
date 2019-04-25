@@ -7,14 +7,15 @@ router.get("/test", (req,res)=>{
   res.render("registerCustomer.ejs")
 })
 
-// router.get("/", (req,res)=>{
-//   if(req.session.isLogin == undefined){   
-//     req.session.isLogin = false;
-//   } 
-//   res.render("home.ejs", {
-//     log : req.session
-//   })
-// })
+router.get("/", (req,res)=>{
+  if(req.session.isLogin == undefined){   
+    req.session.isLogin = false;
+  } 
+  res.render("home.ejs", {
+    log : req.session,
+    user: ''
+  })
+})
 
 // // router.post("/", (req,res)=>{
 // //   if(req.session.isLogin == true){   

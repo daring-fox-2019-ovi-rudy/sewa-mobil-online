@@ -8,6 +8,5 @@ router.get("/", (req, res) => {
 })
 router.use("/", Customer)
 router.use("/", Driver)
-router.use("/", Order)
 
 module.exports = router

@@ -10,8 +10,9 @@
 <body>
     <%- include('../partials/navbar.ejs')%>
     <center>
+        <br><br><br><br><br>
         <% if(log.isLogin == false) { %>
-        <h1 style="color:darkorange"> Are You a Driver or Customer?</h1>
+        <div style="color:darkorange; font-size: 50px" > Are You a Driver or Customer?</div>
         <a href="/driver/login"><input type="submit" value="DRIVER"></a>
         <a href="/customer/login"><input type="submit" value="CUSTOMER"></a>
         <% } %>

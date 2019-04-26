@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sewa Mobil Cepat dan Terpercaya</title>
+    <%- include('../partials/navbarcss.ejs')%>
+</head>
+<body>
+    <%- include('../partials/navbar.ejs')%>
+    <center>
+      <h1>Customer Order History</h1>
+      <table border="1">
+          <tr>
+              <th>driver name</th>
+              <th>phone number</th>
+              <th>requested at</th>
+              <th>updated at</th>
+              <th>status</th>
+          </tr>
+          <% datas.forEach(data => { %>
+              <tr>
+                  <td><%= data.Driver.name %></td>
+                  <td><%= data.Driver.phone_number %></td>
+                  <td><%= data.createdAt %></td>
+                  <td><%= data.updatedAt %></td>
+                  <% if (data.status == 0) { %>
+                    <td>pending</td>
+                  <% } %>
+                  <% if (data.status == 1) { %>
+                    <td>accepted</td>
+                  <% } %>
+                  <% if (data.status == 2) { %>
+                    <td>rejected</td>
+                  <% } %>
+              </tr>
+          <% }) %>
+      </table>
+    </center>
+</body>
+</html>

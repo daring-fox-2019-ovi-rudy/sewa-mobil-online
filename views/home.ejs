@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sewa Mobil Cepat dan Terpercaya</title>
+    <%- include('../partials/navbarcss.ejs')%>
+</head>
+<body>
+    <%- include('../partials/navbar.ejs')%>
+    <center>
+        <br><br><br><br><br>
+        <% if(log.isLogin == false) { %>
+        <div style="color:darkorange; font-size: 50px" > Are You a Driver or Customer?</div>
+        <a href="/driver/login"><input type="submit" value="DRIVER"></a>
+        <a href="/customer/login"><input type="submit" value="CUSTOMER"></a>
+        <% } %>
+        <br><br><br><br><br>
+        <% if(log.isLogin == true) { %>
+            <div style="color:darkorange; font-size: 100px" > Welcome <%= log.loggedAs %> !</div>
+        <% } %>
+    </center>
+  <h1><%= message %></h1>
+</body>
+</html>

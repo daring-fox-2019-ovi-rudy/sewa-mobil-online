@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Sewa Mobil Cepat dan Terpercaya</title>
+  <%- include('../partials/navbarcss.ejs')%>
+</head>
+<body>
+  <center>
+      <%- include('../partials/navbar.ejs')%>
+      <h1>Login</h1>
+      <div>
+        <form action="/<%-user%>/login" method="POST">
+          <label for="userName">User Name</label><br>
+          <input type="text" id="userName" name="userName" placeholder="User Name"><br>
+          <label for="password">Password</label><br>
+          <input type="password" id="password" name="password" placeholder="Password"><br><br>
+          <input type="submit" value="Login">
+          <div>Or <a href="/<%-user%>/register">Register</a></div>
+        </form>
+      </div>
+  </center>
+  <h1><%= message %></h1>
+</body>
+</html>

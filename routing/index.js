@@ -175,12 +175,12 @@ router.post("/:user/login", (req,res)=>{
               res.redirect("/")
             }
           } else {
-            res.redirect("/driver/login?status=login-failed-:-username-does-not-found")
+            res.redirect("/customer/login?status=login-failed-:-username-does-not-found")
           }
         })
       } 
     } else {
-      res.redirect("/driver/login?status=login-failed-:-page-does-not-found")
+      res.redirect("/customer/login?status=login-failed-:-page-does-not-found")
     }
   } else {
     res.redirect("/test")
